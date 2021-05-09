@@ -1,23 +1,41 @@
-import argon2 from "argon2";
-
+import SHA256 from "crypto-js/sha256.js";
 class Block {
-  constructor(index, timestamp, data, prevHash = "") {
-    this.index = index;
+  constructor(timestamp, transactions, previousHash = "") {
+    this.previousHash = previousHash;
     this.timestamp = timestamp;
-    this.data = data;
-    this.prevHash = prevHash;
-    this.hash = this.generateHash();
+    this.transactions = transactions;
+    this.nonce = 0;
+    this.hash = this.calculateHash();
   }
 
-  async generateHash() {
-    try {
-      const toHashData =
-        this.index + this.timestamp + this.prevHash + JSON.stringify(this.data);
-      const hash = await argon2.hash(toHashData);
-      return hash;
-    } catch (err) {
-      console.error(err);
+  calculateHash() {
+    return SHA256(
+      this.previousHash +
+        this.timestamp +
+        JSON.stringify(this.transactions) +
+        this.nonce
+    ).toString();
+  }
+
+  mineBlock(difficulty) {
+    while (
+      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")
+    ) {
+      this.nonce++;
+      this.hash = this.calculateHash();
     }
+
+    console.log("BLOCK MINED: " + this.hash);
+  }
+
+  hasValidTransactions() {
+    for (const tx of this.transactions) {
+      if (!tx.isValid()) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 
