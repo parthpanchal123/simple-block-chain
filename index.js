@@ -1,17 +1,21 @@
-import BlockChain from "./src/models/BlockChain.js";
-import Block from "./src/models/Block.js";
-import Transaction from "./src/models/Transaction.js";
+const BlockChain = require("./src/models/BlockChain.js");
+const Transaction = require("./src/models/Transaction.js");
+const { PUBLIC_KEY, PRIVATE_KEY } = require("./config");
+const EC = require("elliptic").ec;
+const ec = new EC("secp256k1");
 
+console.log(PUBLIC_KEY);
+const myKey = ec.keyFromPrivate(PRIVATE_KEY);
+const myWalletAddress = myKey.getPublic("hex");
 let testBlockChain = new BlockChain();
 
-testBlockChain.addTransaction(new Transaction("a1", "a2", 100));
-testBlockChain.addTransaction(new Transaction("a2", "a1", 50));
+const tx1 = new Transaction(myWalletAddress, "some public key", 10);
+tx1.signTransaction(myKey);
+
+testBlockChain.addTransaction(tx1);
 
 console.log("Starting the miner");
-testBlockChain.minePendingTransactions("my");
-console.log(testBlockChain.getBalanceOfAddress("my"));
+testBlockChain.minePendingTransactions(myWalletAddress);
+console.log(testBlockChain.getBalanceOfAddress(myWalletAddress));
 
-console.log("Starting the miner again");
-testBlockChain.minePendingTransactions("my");
-
-console.log(testBlockChain.getBalanceOfAddress("my"));
+console.log("Is chain valid", testBlockChain.isChainValid());

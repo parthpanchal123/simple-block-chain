@@ -1,4 +1,6 @@
-import SHA256 from "crypto-js/sha256.js";
+const SHA256 = require("crypto-js/sha256.js");
+const EC = require("elliptic").ec;
+const ec = new EC("secp256k1");
 class Block {
   constructor(timestamp, transactions, previousHash = "") {
     this.previousHash = previousHash;
@@ -39,4 +41,4 @@ class Block {
   }
 }
 
-export default Block;
+module.exports = Block;

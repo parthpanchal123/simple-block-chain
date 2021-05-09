@@ -5,8 +5,8 @@
   "repository": "https://github.com/parthpanchal123/simple-block-chain.git",
   "author": "Parth Panchal <parthpanchal53@gmail.com>",
   "license": "MIT",
-  "type": "module",
   "dependencies": {
-    "crypto-js": "^4.0.0"
+    "crypto-js": "^4.0.0",
+    "elliptic": "^6.5.4"
   }
 }
