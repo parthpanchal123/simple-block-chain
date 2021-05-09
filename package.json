@@ -1,0 +1,12 @@
+{
+  "name": "simple-block-chain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/parthpanchal123/simple-block-chain.git",
+  "author": "Parth Panchal <parthpanchal53@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "argon2": "^0.27.2"
+  }
+}
